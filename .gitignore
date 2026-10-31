@@ -1,0 +1,23 @@
+# Data (large files, download separately)
+data/
+models/
+
+# Legacy code and old outputs
+legacy/
+outputs/
+
+# Virtual environments
+.venv*/
+venv/
+
+# Caches
+cache/
+__pycache__/
+.pytest_cache/
+__MACOSX/
+
+# IDE
+.idea/
+
+# OS
+.DS_Store
