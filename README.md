@@ -25,7 +25,9 @@ An ML pipeline that trains a **LightGBM Poisson** model on UK **STATS19** crash 
 
 ## Known limitations
 
-- **Negative-sampling leakage in the model evaluation.** In the published version, non-crash (negative) samples were drawn at a small set of fixed timestamps with default weather and surface codes, while crash samples used real times and conditions. A random row split therefore lets the model separate the classes by time and condition codes, which inflates the reported Poisson deviance. The routing experiments and the 2023 temporal hold-out (Spearman 0.066) are reported as-is; a corrected evaluation (negatives sampled from the same time distribution with historical weather, plus spatial cross-validation) is in progress.
+- **Negative-sampling leakage in the model evaluation.** In the published version, non-crash (negative) samples were drawn at a small set of fixed timestamps with default weather and surface codes, while crash samples used real times and conditions. A random row split therefore lets the model separate the classes by time and condition codes, which inflates the reported random-split metrics (Poisson deviance and Spearman 0.515).
+- **Misaligned 2023 temporal hold-out.** `_temporal_validation` in `route_risk/model.py` looks up the 2023 crash count for each edge-hour row by the row's position instead of by its edge, so predictions and held-out counts are not matched by road segment. The reported hold-out result (Spearman 0.066) therefore does not measure temporal generalization.
+- The routing experiments are reported as-is. A corrected evaluation (negatives sampled from the same time distribution with historical weather, spatial cross-validation, and a per-edge temporal hold-out) is in progress.
 - **London-centric.** The BBOX, traffic proxies, and condition-code mappings assume Greater London. Adapt `config.py` for other regions.
 - **Reported crashes only.** STATS19 undercounts minor incidents and near-misses.
 - **Predictive, not causal.** The model identifies correlations, not root causes.
